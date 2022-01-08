@@ -1,7 +1,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
 
 const width = 1500;
-const height = 1500;
+const height = 500;
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = width;
@@ -63,6 +63,7 @@ function drawTimeData(timeData) {
   requestAnimationFrame(() => drawTimeData(timeData));
 }
 
+// Enables the use of HSL with Canvas
 function hslToRgb(h, s, l) {
   let r;
   let g;
@@ -95,11 +96,12 @@ function drawFrequency(frequencyData) {
   analyzer.getByteFrequencyData(frequencyData);
   // Figure out the bar width
   const barWidth = (width / bufferLength) * 2.5;
+
   let x = 0;
   frequencyData.forEach((amount) => {
     // 0 to 255
     const percent = amount / 255;
-    const barHeight = height * percent * 1.2;
+    const barHeight = height * percent * 0.5;
     // Convert color to HSL
     // https://mothereffinghsl.com/
     const [h, s, l] = [360 / (percent * 360), 0.5, 0.5];
@@ -107,7 +109,7 @@ function drawFrequency(frequencyData) {
     ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
 
     ctx.fillRect(x, height - barHeight, barWidth, barHeight);
-    x += barWidth + 1;
+    x += barWidth + 0.5;
   });
 
   requestAnimationFrame(() => drawFrequency(frequencyData));
