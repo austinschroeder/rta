@@ -1,5 +1,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
 
+import { hslToRgb } from './utils';
+
 const width = 1500;
 const height = 1500;
 const canvas = document.querySelector('canvas');
@@ -61,6 +63,29 @@ function drawTimeData(timeData) {
 
   // Call itself as soon as possible
   requestAnimationFrame(() => drawTimeData(timeData));
+}
+
+function drawFrequency(frequencyData) {
+  // Get the freq data into the freq array
+  analyzer.getByteFrequencyData(frequencyData);
+  // Figure out the bar width
+  const barWidth = (width / bufferLength) * 2.5;
+  let x = 0;
+  frequencyData.forEach((amount) => {
+    // 0 to 255
+    const percent = amount / 255;
+    const barHeight = height * percent * 1.2;
+    // Convert color to HSL
+    // https://mothereffinghsl.com/
+    const [h, s, l] = [360 / (percent * 360), 0.5, 0.5];
+    const [r, g, b] = hslToRgb(h, s, l);
+    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+
+    ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+    x += barWidth + 1;
+  });
+
+  requestAnimationFrame(() => drawFrequency(frequencyData));
 }
 
 getAudio();

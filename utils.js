@@ -1,3 +1,5 @@
+// Enables the use of HSL with Canvas
+
 export function hslToRgb(h, s, l) {
   let r;
   let g;
