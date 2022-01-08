@@ -101,7 +101,7 @@ function drawFrequency(frequencyData) {
   frequencyData.forEach((amount) => {
     // 0 to 255
     const percent = amount / 255;
-    const barHeight = height * percent * 1.5;
+    const barHeight = height * percent * 0.75;
     // Convert color to HSL
     // https://mothereffinghsl.com/
     const [h, s, l] = [360 / (percent * 360), 0.5, 0.5];
